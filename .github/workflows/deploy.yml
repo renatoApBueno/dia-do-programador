@@ -14,18 +14,16 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v3
-        with:
-          node-version: "18"
 
       - name: Install dependencies
-        run: npm install
+        uses: bahmutov/npm-install@v1
 
       - name: Build project
         run: npm run build
 
-      - name: Upload production build
+      - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
         with:
           name: production-files
@@ -45,8 +43,7 @@ jobs:
           path: ./dist
 
       - name: Deploy to GitHub Pages
-        uses: actions/github-pages-deploy-action@v4
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages
-          folder: ./dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
